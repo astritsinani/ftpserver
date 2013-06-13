@@ -152,6 +152,9 @@ public class DefaultFtpHandler implements FtpHandler {
                             "Client closed connection before all replies could be sent, last reply was {}",
                             writeToClosedSessionException.getRequest());
             session.close(false).awaitUninterruptibly(10000);
+        } else if (cause instanceof IOException) {
+            // not really anything we can do about this...
+            session.close(false).awaitUninterruptibly(10000);
         } else {
             LOG.error("Exception caught, closing session", cause);
             session.close(false).awaitUninterruptibly(10000);
